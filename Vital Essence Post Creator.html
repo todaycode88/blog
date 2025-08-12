@@ -14,7 +14,7 @@
     <!-- Font Awesome 6.5.1 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Favicon -->
-    <link rel="icon" href="https://vital-essense.github.io/blog/images/favicon-heart.png" type="image/png">
+    <link rel="icon" href="https://todaycode88.github.io/blog/images/favicon-heart.png" type="image/png">
     <!-- CKEditor 4 -->
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <style>
@@ -210,14 +210,14 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="https://vital-essense.github.io/home/">Vital Essence</a>
+            <a class="navbar-brand fw-bold" href="https://todaycode88.github.io/home/">Vital Essence</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/home/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/blog/">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://todaycode88.github.io/home/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://todaycode88.github.io/blog/">Blog</a></li>
                 </ul>
             </div>
         </div>
@@ -329,7 +329,7 @@
 
             // Generate post filename
             const filename = title.replace(/\s+/g, '-').toLowerCase() + '.html';
-            const postLink = 'post/' + filename;
+            const postLink = 'https://todaycode88.github.io/blog/post/' + filename;
 
             // XLSX Script
             const xlsxScript = `<script type="text/javascript">
@@ -391,7 +391,7 @@
     <!-- Font Awesome 6.5.1 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Favicon -->
-    <link rel="icon" href="https://vital-essense.github.io/blog/images/favicon-heart.png" type="image/png">
+    <link rel="icon" href="https://todaycode88.github.io/blog/images/favicon-heart.png" type="image/png">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -587,14 +587,14 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="https://vital-essense.github.io/home/">Vital Essence</a>
+            <a class="navbar-brand fw-bold" href="https://todaycode88.github.io/home/">Vital Essence</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/home/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/blog/">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://todaycode88.github.io/home/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://todaycode88.github.io/blog/">Blog</a></li>
     
                 </ul>
             </div>
@@ -717,49 +717,45 @@
             document.body.removeChild(postA);
             URL.revokeObjectURL(postUrl);
 
-            // Now read index file and update
+            // Now read index file and update using string insertion
             const reader = new FileReader();
             reader.onload = function(e) {
-                const indexHtml = e.target.result;
+                let indexHtml = e.target.result;
 
-                // Parse index HTML
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(indexHtml, 'text/html');
+                // Find the insertion point
+                const containerStart = '<div class="row" id="blogPostContainer">';
+                const insertionPoint = indexHtml.indexOf(containerStart) + containerStart.length;
 
-                const container = doc.getElementById('blogPostContainer');
-                if (!container) {
+                if (insertionPoint === -1) {
                     alert('Invalid index.html file. Could not find blogPostContainer.');
                     return;
                 }
 
-                // Create new col div
-                const newCol = doc.createElement('div');
-                newCol.className = 'col-md-4 mb-4 blog-post';
-                newCol.setAttribute('data-page', '1');
-                newCol.innerHTML = `
-                    <div class="card">
-                        <div class="card-img-top">
-                            <img src="${imageUrl}" class="img-fluid" alt="${altText}" loading="lazy">
-                            <div class="card-img-overlay">${overlayText}</div>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">${title}</h5>
-                            <p class="card-text">${description}</p>
-                            <a href="${postLink}" class="btn btn-custom">Read More</a>
-                            <div class="social-share mt-3">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-pinterest"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                // New card HTML
+                const newCard = `
+<!-- New Post -->
+<div class="col-md-4 mb-4 blog-post" data-page="1">
+    <div class="card">
+        <div class="card-img-top">
+            <img src="${imageUrl}" class="img-fluid" alt="${altText}" loading="lazy">
+            <div class="card-img-overlay">${overlayText}</div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">${title}</h5>
+            <p class="card-text">${description}</p>
+            <a href="${postLink}" class="btn btn-custom">Read More</a>
+            <div class="social-share mt-3">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+`;
 
-                // Prepend to container (newest first)
-                container.insertBefore(newCol, container.firstChild);
-
-                // Serialize back to HTML
-                let updatedIndex = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+                // Insert the new card
+                const updatedIndex = indexHtml.substring(0, insertionPoint) + newCard + indexHtml.substring(insertionPoint);
 
                 // Download updated index.html
                 const indexBlob = new Blob([updatedIndex], { type: 'text/html' });
