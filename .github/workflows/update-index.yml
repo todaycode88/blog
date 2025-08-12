@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - 'post/*.html'
-
+permissions:
+  contents: write
 jobs:
   update-index:
     runs-on: ubuntu-latest
