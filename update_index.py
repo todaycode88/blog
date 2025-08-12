@@ -2,7 +2,7 @@ import os
 from bs4 import BeautifulSoup
 
 POSTS_DIR = "post"
-INDEX_FILE = "blog/index.html"
+INDEX_FILE = "index.html"
 
 def get_post_metadata(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
@@ -20,7 +20,7 @@ def build_index():
             filepath = os.path.join(POSTS_DIR, filename)
             posts.append(get_post_metadata(filepath))
     
-    # Sort by filename (or modify for date logic)
+    # Sort by filename (latest first)
     posts.sort(reverse=True, key=lambda x: x['filename'])
     
     # Build HTML
