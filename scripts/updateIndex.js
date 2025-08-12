@@ -1,62 +1,59 @@
-const fs = require("fs");
-const cheerio = require("cheerio");
-const path = require("path");
+const fs = require('fs');
+const cheerio = require('cheerio');
+const path = require('path');
 
-// Find newest post in /post
-const postDir = path.join(__dirname, "../post");
+// Get all posts
+const postDir = path.join(__dirname, 'post');
 const files = fs.readdirSync(postDir)
-  .filter(f => f.endsWith(".html"))
-  .map(f => ({ name: f, time: fs.statSync(path.join(postDir, f)).mtime }))
-  .sort((a, b) => b.time - a.time);
+  .filter(f => f.endsWith('.html'))
+  .sort((a, b) => fs.statSync(path.join(postDir, b)).mtime - fs.statSync(path.join(postDir, a)).mtime);
 
-if (!files.length) {
-  console.log("No post found.");
+if (files.length === 0) {
+  console.log("❌ No post found");
   process.exit(0);
 }
 
-const latestPostPath = path.join(postDir, files[0].name);
-const postHtml = fs.readFileSync(latestPostPath, "utf-8");
+const latestFile = files[0];
+const latestPath = path.join(postDir, latestFile);
+const postHtml = fs.readFileSync(latestPath, 'utf8');
 const $post = cheerio.load(postHtml);
 
-const title = $post("title").text().trim() || "Untitled Post";
-const description = $post("p").first().text().trim() || "Read more...";
-const imageUrl = $post("img").first().attr("src") || "https://via.placeholder.com/400x300";
-const overlayText = title;
-const postLink = `post/${files[0].name}`;
-const fullContent = $post("body").html().replace(/"/g, '&quot;').trim();
+// Extract fields from post
+const title = $post('title').text().trim() || 'Untitled Post';
+const image = $post('img').first().attr('src') || 'https://via.placeholder.com/300x200';
+const description = $post('p').first().text().trim() || '';
+const link = `post/${latestFile}`;
 
-// Read index.html
-const indexPath = path.join(__dirname, "../index.html");
-const indexHtml = fs.readFileSync(indexPath, "utf-8");
+console.log(`🆕 Latest post: ${latestFile}`);
+console.log(`Title: ${title}`);
+console.log(`Image: ${image}`);
+console.log(`Description: ${description}`);
+
+// Load index.html
+const indexHtmlPath = path.join(__dirname, 'index.html');
+const indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 const $index = cheerio.load(indexHtml);
 
 // Create new card HTML
 const newCard = `
 <div class="col-md-4 mb-4 blog-post" data-page="1">
-    <div class="card">
-        <div class="card-img-top">
-            <img src="${imageUrl}" class="img-fluid" alt="${overlayText}" loading="lazy">
-            <div class="card-img-overlay">${overlayText}</div>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">${title}</h5>
-            <p class="card-text">${description}</p>
-            <a href="${postLink}" class="btn btn-custom read-more" data-bs-toggle="modal" data-bs-target="#postModal" data-title="${title}" data-content="${fullContent}">Read More</a>
-            <div class="social-share mt-3">
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-pinterest"></i></a>
-            </div>
-        </div>
+  <div class="card">
+    <div class="card-img-top">
+      <img src="${image}" class="img-fluid" alt="${title}" loading="lazy">
+      <div class="card-img-overlay">${title}</div>
     </div>
+    <div class="card-body">
+      <h5 class="card-title">${title}</h5>
+      <p class="card-text">${description}</p>
+      <a href="${link}" class="btn btn-custom read-more">Read More</a>
+    </div>
+  </div>
 </div>
 `;
 
-// Insert at top of .row containing posts
-const rowDiv = $index(".row").first();
-rowDiv.prepend(newCard);
+// Insert card at top
+$index('.blog-post').first().before(newCard);
 
-// Save file
-fs.writeFileSync(indexPath, $index.html(), "utf-8");
-
-console.log(`✅ Added latest post "${title}" to index.html`);
+// Save changes
+fs.writeFileSync(indexHtmlPath, $index.html(), 'utf8');
+console.log("✅ index.html updated with latest post");
