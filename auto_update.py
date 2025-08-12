@@ -25,16 +25,25 @@ def build_index():
     
     posts.sort(reverse=True, key=lambda x: x['filename'])  # latest first
     
-    html_content = "<html><head><title>My Blog</title></head><body>"
-    html_content += "<h1>Blog Posts</h1><ul>"
+    post_list_html = ""
     for post in posts:
-        html_content += f"<li><a href='post/{post['filename']}'>{post['title']}</a></li>"
-    html_content += "</ul></body></html>"
+        post_list_html += f"<li><a href='post/{post['filename']}'>{post['title']}</a></li>\n"
+    
+    with open(INDEX_FILE, "r", encoding="utf-8") as f:
+        index_content = f.read()
+    
+    start_marker = "<!-- POSTS_START -->"
+    end_marker = "<!-- POSTS_END -->"
+    
+    before = index_content.split(start_marker)[0]
+    after = index_content.split(end_marker)[-1]
+    
+    new_content = before + start_marker + "\n" + post_list_html + end_marker + after
     
     with open(INDEX_FILE, "w", encoding="utf-8") as f:
-        f.write(html_content)
+        f.write(new_content)
     
-    print("✅ index.html updated!")
+    print("✅ index.html updated with new post list!")
 
 class Watcher(FileSystemEventHandler):
     def on_modified(self, event):
