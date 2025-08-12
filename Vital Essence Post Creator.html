@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -576,6 +575,19 @@
             0% { background-position: 0 0; }
             100% { background-position: 1440px 0; }
         }
+        .header-banner {
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            background-blend-mode: overlay;
+            background-color: rgba(239,68,68,0.6);
+            color: #ffffff;
+            padding: 18px;
+            text-align: center;
+            font-family: 'Lora', serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            border-radius: 0 0 25px 25px;
+        }
     </style>
 </head>
 <body>
@@ -715,7 +727,7 @@
             document.body.appendChild(postA);
             postA.click();
             document.body.removeChild(postA);
-            URL.revokeObjectURL(postUrl);
+            setTimeout(() => URL.revokeObjectURL(postUrl), 10000); // Revoke after 10 seconds
 
             // Now read index file and update using string insertion
             const reader = new FileReader();
@@ -766,7 +778,7 @@
                 document.body.appendChild(indexA);
                 indexA.click();
                 document.body.removeChild(indexA);
-                URL.revokeObjectURL(indexUrl);
+                setTimeout(() => URL.revokeObjectURL(indexUrl), 10000); // Revoke after 10 seconds
 
                 alert('Post HTML downloaded (save in "post" folder). Updated index.html downloaded (replace existing index.html).');
             };
@@ -775,4 +787,3 @@
     </script>
 </body>
 </html>
-```
