@@ -465,7 +465,12 @@
         });
 
         // Dynamic Blog Posts Loading
-        fetch('/post/').then(res => res.text()).then(text => {
+        console.log('Starting post loading...');
+        fetch('/post/').then(res => {
+            if (!res.ok) throw new Error('Failed to fetch directory: ' + res.status);
+            return res.text();
+        }).then(text => {
+            console.log('Directory fetched successfully.');
             let parser = new DOMParser();
             let doc = parser.parseFromString(text, 'text/html');
             let links = doc.querySelectorAll('a');
@@ -473,14 +478,20 @@
                 .map(a => a.href.split('/').pop())
                 .filter(file => file && file.endsWith('.html'));
             files.sort((a, b) => b.localeCompare(a)); // Reverse alphabetical for potential date-prefix sorting
+            console.log('Found files:', files);
+            if (files.length === 0) alert('No HTML files found in /post/ folder.');
             return files;
         }).then(files => {
-            return Promise.all(files.map(file => fetch(`/post/${file}`).then(res => res.text()).then(text => {
+            return Promise.all(files.map(file => fetch(`/post/${file}`).then(res => {
+                if (!res.ok) throw new Error('Failed to fetch post: ' + file);
+                return res.text();
+            }).then(text => {
+                console.log('Fetched post:', file);
                 let parser = new DOMParser();
                 let doc = parser.parseFromString(text, 'text/html');
                 let title = doc.querySelector('title')?.textContent || file.replace('.html', '');
                 let descriptionMeta = doc.querySelector('meta[name="description"]')?.content;
-                let description = descriptionMeta || (doc.querySelector('p')?.textContent.substring(0, 100) + '...') || '';
+                let description = descriptionMeta || (doc.querySelector('p')?.textContent?.substring(0, 100) + '...') || '';
                 let image_url = doc.querySelector('meta[name="image"]')?.content || doc.querySelector('img')?.src || 'https://images.unsplash.com/photo-1506126611910-5e356b918329?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80';
                 let alt_text = doc.querySelector('meta[name="alt"]')?.content || doc.querySelector('img')?.alt || title;
                 let overlay_text = doc.querySelector('meta[name="overlay"]')?.content || 'Category';
@@ -488,6 +499,7 @@
                 return { title, description, image_url, alt_text, overlay_text, post_url };
             })));
         }).then(posts => {
+            console.log('Processed posts:', posts);
             const container = document.getElementById('blogPostContainer');
             container.innerHTML = ''; // Clear any static content
             const postsPerPage = 9;
@@ -543,7 +555,10 @@
                 });
             });
             if (numPages > 0) showPage('1');
-        }).catch(err => console.error('Error loading posts:', err));
+        }).catch(err => {
+            console.error('Error loading posts:', err);
+            alert('Error loading blog posts: ' + err.message + '. Check console for details.');
+        });
 
         // Modal Content Loading
         const postModal = document.getElementById('postModal');
@@ -555,11 +570,15 @@
             const modalContent = document.getElementById('postModalContent');
             modalTitle.textContent = title;
             modalContent.innerHTML = 'Loading...';
-            fetch(postUrl).then(res => res.text()).then(text => {
+            fetch(postUrl).then(res => {
+                if (!res.ok) throw new Error('Failed to load post content: ' + res.status);
+                return res.text();
+            }).then(text => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(text, 'text/html');
                 modalContent.innerHTML = doc.body.innerHTML;
             }).catch(err => {
+                console.error('Error loading modal content:', err);
                 modalContent.innerHTML = 'Error loading content: ' + err.message;
             });
         });
