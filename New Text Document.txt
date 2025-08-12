@@ -1,0 +1,70 @@
+<style>
+  .post-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s;
+  }
+  .post-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .post-title {
+    font-size: 1.2em;
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+  .post-excerpt {
+    color: #555;
+    font-size: 0.9em;
+  }
+</style>
+
+<div id="blogPostContainer"></div>
+
+<script>
+(async () => {
+  const username = "YOUR_GITHUB_USERNAME"; // e.g. siddharth
+  const repo = "blog"; // repo name
+
+  // Fetch list of HTML posts from GitHub
+  const res = await fetch(
+    `https://api.github.com/repos/${username}/${repo}/contents/post`
+  );
+  const files = await res.json();
+
+  // Filter & sort (assuming filenames have dates for ordering)
+  const htmlFiles = files
+    .filter(file => file.name.endsWith(".html"))
+    .sort((a, b) => b.name.localeCompare(a.name));
+
+  const container = document.getElementById("blogPostContainer");
+
+  for (const file of htmlFiles) {
+    // Fetch the HTML content of the post
+    const postRes = await fetch(`post/${file.name}`);
+    const html = await postRes.text();
+
+    // Extract <title> and first paragraph
+    const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+    const excerptMatch = html.match(/<p>(.*?)<\/p>/i);
+
+    const title = titleMatch ? titleMatch[1] : file.name;
+    const excerpt = excerptMatch ? excerptMatch[1] : "No preview available.";
+
+    // Create a clickable post card
+    const postCard = document.createElement("a");
+    postCard.href = `post/${file.name}`;
+    postCard.className = "post-card";
+    postCard.innerHTML = `
+      <div class="post-title">${title}</div>
+      <div class="post-excerpt">${excerpt}</div>
+    `;
+
+    container.appendChild(postCard);
+  }
+})();
+</script>
