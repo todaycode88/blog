@@ -1,59 +1,67 @@
-const fs = require('fs');
-const cheerio = require('cheerio');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-// Get all posts
-const postDir = path.join(__dirname, 'post');
-const files = fs.readdirSync(postDir)
-  .filter(f => f.endsWith('.html'))
-  .sort((a, b) => fs.statSync(path.join(postDir, b)).mtime - fs.statSync(path.join(postDir, a)).mtime);
+const postsDir = path.join(__dirname, "post");
+const indexFile = path.join(__dirname, "index.html");
 
-if (files.length === 0) {
-  console.log("❌ No post found");
-  process.exit(0);
+function getLatestPost() {
+    const files = fs.readdirSync(postsDir)
+        .filter(file => file.endsWith(".html"))
+        .map(file => ({
+            name: file,
+            time: fs.statSync(path.join(postsDir, file)).mtime.getTime()
+        }))
+        .sort((a, b) => b.time - a.time);
+
+    if (files.length === 0) return null;
+
+    const latestFile = files[0].name;
+    const content = fs.readFileSync(path.join(postsDir, latestFile), "utf-8");
+
+    const titleMatch = content.match(/<h1[^>]*>(.*?)<\/h1>/i);
+    const title = titleMatch ? titleMatch[1] : latestFile;
+
+    const descMatch = content.match(/<p[^>]*>(.*?)<\/p>/i);
+    const description = descMatch ? descMatch[1] : "";
+
+    return { latestFile, title, description };
 }
 
-const latestFile = files[0];
-const latestPath = path.join(postDir, latestFile);
-const postHtml = fs.readFileSync(latestPath, 'utf8');
-const $post = cheerio.load(postHtml);
+function updateIndex() {
+    const latestPost = getLatestPost();
+    if (!latestPost) {
+        console.log("No posts found.");
+        return;
+    }
 
-// Extract fields from post
-const title = $post('title').text().trim() || 'Untitled Post';
-const image = $post('img').first().attr('src') || 'https://via.placeholder.com/300x200';
-const description = $post('p').first().text().trim() || '';
-const link = `post/${latestFile}`;
+    let indexContent = fs.readFileSync(indexFile, "utf-8");
 
-console.log(`🆕 Latest post: ${latestFile}`);
-console.log(`Title: ${title}`);
-console.log(`Image: ${image}`);
-console.log(`Description: ${description}`);
-
-// Load index.html
-const indexHtmlPath = path.join(__dirname, 'index.html');
-const indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
-const $index = cheerio.load(indexHtml);
-
-// Create new card HTML
-const newCard = `
-<div class="col-md-4 mb-4 blog-post" data-page="1">
-  <div class="card">
-    <div class="card-img-top">
-      <img src="${image}" class="img-fluid" alt="${title}" loading="lazy">
-      <div class="card-img-overlay">${title}</div>
+    const newCard = `
+    <!-- Auto-added latest post -->
+    <div class="col-md-4 mb-4 blog-post" data-page="1">
+        <div class="card">
+            <div class="card-img-top">
+                <img src="https://via.placeholder.com/400x200" class="img-fluid" alt="${latestPost.title}">
+                <div class="card-img-overlay">${latestPost.title}</div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">${latestPost.title}</h5>
+                <p class="card-text">${latestPost.description}</p>
+                <a href="post/${latestPost.latestFile}" class="btn btn-custom">Read More</a>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">${title}</h5>
-      <p class="card-text">${description}</p>
-      <a href="${link}" class="btn btn-custom read-more">Read More</a>
-    </div>
-  </div>
-</div>
-`;
+    `;
 
-// Insert card at top
-$index('.blog-post').first().before(newCard);
+    // Replace existing latest post block
+    if (indexContent.includes("<!-- Auto-added latest post -->")) {
+        indexContent = indexContent.replace(/<!-- Auto-added latest post -->[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/, newCard);
+    } else {
+        indexContent = indexContent.replace("</div>\n</div>", `${newCard}\n</div>\n</div>`);
+    }
 
-// Save changes
-fs.writeFileSync(indexHtmlPath, $index.html(), 'utf8');
-console.log("✅ index.html updated with latest post");
+    fs.writeFileSync(indexFile, indexContent, "utf-8");
+    console.log(`✅ Index updated with latest post: ${latestPost.title}`);
+}
+
+updateIndex();
