@@ -1,1 +1,568 @@
-<html><head><title>My Blog</title></head><body><h1>Blog Posts</h1><ul><li><a href='post/role-of-medical.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/role-of-medical-fitouts-in-today’s-healthcare-industry.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/role-of-medical - Copy.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/post.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/nutrient-dense-diets.html'>Nutrient-Dense Diets for Longevity - Vital Essence</a></li><li><a href='post/nutrient-dense-diets - Copy.html'>Nutrient-Dense Diets for Longevity - Vital Essence</a></li><li><a href='post/medical.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/medical-health.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/medical-health - Copy.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/health.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/health - Copy.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/health - Copy - Copy.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/health - Copy (3).html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/health - Copy (2).html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li><li><a href='post/heal.html'>Role of Medical Fitouts in Today’s Healthcare Industry - Vital Essence</a></li></ul></body></html>
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {}; 
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+            var firstSheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[firstSheetName];
+
+            // Convert sheet to JSON to filter blank rows
+            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+            // Filter out blank rows (rows where all cells are empty, null, or undefined)
+            var filteredData = jsonData.filter(row => row.some(filledCell));
+
+            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+            var headerRowIndex = filteredData.findIndex((row, index) =>
+              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+            );
+            // Fallback
+            if (headerRowIndex === -1 || headerRowIndex > 25) {
+              headerRowIndex = 0;
+            }
+
+            // Convert filtered JSON back to CSV
+            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+            return csv;
+        } catch (e) {
+            console.error(e);
+            return "";
+        }
+    }
+    return gk_fileData[filename] || "";
+    }
+</script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore more wellness insights on Vital Essence Blog, blending science and holistic practices for a vibrant life.">
+    <meta name="keywords" content="health, wellness, holistic, nutrition, yoga, mindfulness, fitness">
+    <title>Vital Essence - Blog</title>
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS 3.4.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts: Refined with Lora for headings and Roboto for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Roboto:wght@400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Favicon -->
+    <link rel="icon" href="https://vital-essense.github.io/blog/images/favicon-heart.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            background-color: #f8fafc;
+            color: #333333;
+            line-height: 1.7;
+        }
+        h1, h2, h3, h5 {
+            font-family: 'Lora', serif;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        p, .card-text, .lead {
+            text-align: left;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #1e3a8a, #6d28d9, #ef4444, #22c55e);
+            border-radius: 0 0 60px 60px;
+            color: #ffffff;
+            padding: 160px 0;
+            position: relative;
+            overflow: hidden;
+            background-attachment: fixed;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512436991641-0fd4b2881714?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            opacity: 0.25;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-content h1 {
+            font-size: 4.2rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        .hero-content p {
+            font-size: 1.6rem;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.98));
+            border-radius: 0 0 30px 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-brand, .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #334155;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        .card-img-top {
+            position: relative;
+            overflow: hidden;
+        }
+        .card-img-top img {
+            transition: transform 0.4s ease;
+        }
+        .card:hover .card-img-top img {
+            transform: scale(1.08);
+        }
+        .card-img-overlay {
+            background: rgba(0, 0, 0, 0.25);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 8px;
+            text-align: center;
+            bottom: 0;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        .card:hover .card-img-overlay {
+            background: rgba(0, 0, 0, 0.45);
+        }
+        .card-title::before {
+            content: '\f4c3';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #ef4444;
+            margin-right: 6px;
+            animation: beat 1.2s infinite;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: left;
+            font-family: 'Lora', serif;
+        }
+        .card-text {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #475569;
+        }
+        .curved-section {
+            border-radius: 30px;
+            background: #f1f5f9 url('https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            background-blend-mode: overlay;
+            padding: 50px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        }
+        .curved-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f1f5f9, #e0f2fe, #fee2e2, #ecfccb);
+            opacity: 0.2;
+            animation: gradientShift 10s ease infinite;
+        }
+        .btn-custom {
+            background: #ef4444;
+            color: #ffffff;
+            border-radius: 30px;
+            padding: 10px 28px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn-custom:hover {
+            background: #dc2626;
+            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .social-share a {
+            color: #6d28d9;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-share a:hover {
+            color: #22c55e;
+            transform: scale(1.15);
+        }
+        footer {
+            background: #1e3a8a;
+            color: #ffffff;
+            border-radius: 40px 40px 0 0;
+            padding: 40px 0;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ef4444;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+        .back-to-top.show {
+            opacity: 1;
+        }
+        .back-to-top:hover {
+            transform: scale(1.08);
+        }
+        .search-bar .form-control {
+            border-radius: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            border: 1px solid #22c55e;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .search-bar .form-control:focus {
+            border-color: #ef4444;
+            box-shadow: 0 0 6px rgba(239,68,68,0.3);
+        }
+        .wave-divider {
+            position: relative;
+            height: 70px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%231e3a8a" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,197.3C384,181,480,139,576,138.7C672,139,768,181,864,192C960,203,1056,181,1152,154.7C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat center bottom;
+            background-size: cover;
+            margin-bottom: 30px;
+            animation: wave 12s linear infinite;
+        }
+        .header-banner {
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            background-blend-mode: overlay;
+            background-color: rgba(239,68,68,0.6);
+            color: #ffffff;
+            padding: 18px;
+            text-align: center;
+            font-family: 'Lora', serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            border-radius: 0 0 25px 25px;
+        }
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 15px;
+            background: #f8fafc;
+        }
+        .modal-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .page-item.active .page-link {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+        .page-link {
+            color: #1e3a8a;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .page-link:hover {
+            background-color: #e0f2fe;
+            color: #1e3a8a;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes beat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        @keyframes wave {
+            0% { background-position: 0 0; }
+            100% { background-position: 1440px 0; }
+        }
+        .hero-content h1, .hero-content p {
+            animation: fadeIn 1.2s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <p><i class="fas fa-book-open me-2"></i> Wellness Insights Blog</p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="https://vital-essense.github.io/home/">Vital Essence</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/home/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/home/#author">About Kate</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://vital-essense.github.io/home/#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section text-center">
+        <div class="container hero-content">
+            <h1 class="display-3 fw-bold"><i class="fas fa-blog me-2"></i> Wellness Blog</h1>
+            <p class="lead">Dive deeper into health and wellness topics with our extended blog posts.</p>
+        </div>
+    </section>
+
+    <!-- Wave Divider -->
+    <div class="wave-divider"></div>
+
+    <!-- Blog Posts Section -->
+    <section id="posts" class="py-5">
+        <div class="container curved-section">
+            <h2 class="text-center mb-5"><i class="fas fa-dumbbell me-2"></i> More Wellness Insights</h2>
+            <div class="row" id="blogPostContainer">
+<!-- Blog Post -->
+<div class="col-md-4 mb-4 blog-post" data-page="1">
+    <div class="card">
+        <div class="card-img-top">
+            <img src="IMAGE_URL" class="img-fluid" alt="ALT_TEXT" loading="lazy">
+            <div class="card-img-overlay">OVERLAY_TEXT</div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">TITLE</h5>
+            <p class="card-text">DESCRIPTION</p>
+            <a href="POST_LINK" class="btn btn-custom read-more" data-bs-toggle="modal" data-bs-target="#postModal" data-title="TITLE" data-content="FULL_CONTENT">Read More</a>
+            <div class="social-share mt-3">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Blog pagination">
+                <ul class="pagination">
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>&copy; 2025 Vital Essence. All Rights Reserved.</p>
+            <div class="social-icons mt-3">
+                <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-pinterest"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- Post Modal -->
+    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="postModalLabel">Post Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="postModalContent">
+                    Post content will appear here...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-custom" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript for Functionality -->
+    <script>
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Back to Top Button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // Dynamic Blog Posts Loading
+        fetch('/post/').then(res => res.text()).then(text => {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(text, 'text/html');
+            let links = doc.querySelectorAll('a');
+            let files = Array.from(links)
+                .map(a => a.href.split('/').pop())
+                .filter(file => file && file.endsWith('.html'));
+            files.sort((a, b) => b.localeCompare(a)); // Reverse alphabetical for potential date-prefix sorting
+            return files;
+        }).then(files => {
+            return Promise.all(files.map(file => fetch(`/post/${file}`).then(res => res.text()).then(text => {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(text, 'text/html');
+                let title = doc.querySelector('title')?.textContent || file.replace('.html', '');
+                let descriptionMeta = doc.querySelector('meta[name="description"]')?.content;
+                let description = descriptionMeta || (doc.querySelector('p')?.textContent.substring(0, 100) + '...') || '';
+                let image_url = doc.querySelector('meta[name="image"]')?.content || doc.querySelector('img')?.src || 'https://images.unsplash.com/photo-1506126611910-5e356b918329?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80';
+                let alt_text = doc.querySelector('meta[name="alt"]')?.content || doc.querySelector('img')?.alt || title;
+                let overlay_text = doc.querySelector('meta[name="overlay"]')?.content || 'Category';
+                let post_url = `/post/${file}`;
+                return { title, description, image_url, alt_text, overlay_text, post_url };
+            })));
+        }).then(posts => {
+            const container = document.getElementById('blogPostContainer');
+            container.innerHTML = ''; // Clear any static content
+            const postsPerPage = 9;
+            const numPages = Math.ceil(posts.length / postsPerPage);
+            const pagination = document.querySelector('.pagination');
+            pagination.innerHTML = '';
+            for (let i = 1; i <= numPages; i++) {
+                const li = document.createElement('li');
+                li.classList.add('page-item');
+                li.dataset.page = i;
+                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                pagination.appendChild(li);
+            }
+            posts.forEach((post, index) => {
+                const page = Math.floor(index / postsPerPage) + 1;
+                const div = document.createElement('div');
+                div.classList.add('col-md-4', 'mb-4', 'blog-post');
+                if (page > 1) div.classList.add('d-none');
+                div.dataset.page = page;
+                div.innerHTML = `
+                    <div class="card">
+                        <div class="card-img-top">
+                            <img src="${post.image_url}" class="img-fluid" alt="${post.alt_text}" loading="lazy">
+                            <div class="card-img-overlay">${post.overlay_text}</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${post.title}</h5>
+                            <p class="card-text">${post.description}</p>
+                            <a href="#" class="btn btn-custom read-more" data-bs-toggle="modal" data-bs-target="#postModal" data-title="${post.title}" data-post-url="${post.post_url}">Read More</a>
+                            <div class="social-share mt-3">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-pinterest"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            const pageItems = document.querySelectorAll('.page-item');
+            function showPage(page) {
+                document.querySelectorAll('.blog-post').forEach(post => {
+                    post.classList.toggle('d-none', post.dataset.page !== page);
+                });
+                pageItems.forEach(item => {
+                    item.classList.toggle('active', item.dataset.page === page);
+                });
+            }
+            pageItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage(item.dataset.page);
+                });
+            });
+            if (numPages > 0) showPage('1');
+        }).catch(err => console.error('Error loading posts:', err));
+
+        // Modal Content Loading
+        const postModal = document.getElementById('postModal');
+        postModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const title = button.getAttribute('data-title');
+            const postUrl = button.getAttribute('data-post-url');
+            const modalTitle = document.getElementById('postModalLabel');
+            const modalContent = document.getElementById('postModalContent');
+            modalTitle.textContent = title;
+            modalContent.innerHTML = 'Loading...';
+            fetch(postUrl).then(res => res.text()).then(text => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                modalContent.innerHTML = doc.body.innerHTML;
+            }).catch(err => {
+                modalContent.innerHTML = 'Error loading content: ' + err.message;
+            });
+        });
+    </script>
+</body>
+</html>
