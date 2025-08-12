@@ -1,0 +1,32 @@
+name: Update Index with New Post
+
+on:
+  push:
+    paths:
+      - 'post/*.html'
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install cheerio
+
+      - name: Run update script
+        run: node scripts/updateIndex.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "actions@github.com"
+          git add index.html
+          git commit -m "Update index with latest post"
+          git push
